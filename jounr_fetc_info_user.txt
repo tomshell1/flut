@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(JournalApp());
+}
+
+class JournalApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: JournalHomePage(),
+    );
+  }
+}
+
+class JournalHomePage extends StatefulWidget {
+  @override
+  _JournalHomePageState createState() => _JournalHomePageState();
+}
+
+class _JournalHomePageState extends State<JournalHomePage> {
+  List<String> journalEntries = [];
+
+  void addEntry(String entry) {
+    setState(() {
+      journalEntries.add(entry);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Journal App'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: journalEntries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(journalEntries[index]),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onSubmitted: (String value) {
+                addEntry(value);
+              },
+              decoration: InputDecoration(
+                hintText: 'Write your journal entry...',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    if (journalEntries.length < 5) {
+                      // Limit the number of entries for this example
+                      addEntry('New entry added'); // Add a default entry
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

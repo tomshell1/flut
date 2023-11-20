@@ -1,0 +1,104 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(GuessingGameApp());
+}
+
+class GuessingGameApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: GuessingGameHomePage(),
+    );
+  }
+}
+
+class GuessingGameHomePage extends StatefulWidget {
+  @override
+  _GuessingGameHomePageState createState() => _GuessingGameHomePageState();
+}
+
+class _GuessingGameHomePageState extends State<GuessingGameHomePage> {
+  int? randomNumber;
+  TextEditingController guessController = TextEditingController();
+  Color backgroundColor = Colors.red;
+  String feedbackMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    generateRandomNumber();
+  }
+
+  void generateRandomNumber() {
+    setState(() {
+      randomNumber = Random().nextInt(10) + 1; // Random number between 1 and 10
+      backgroundColor = Colors.red; // Reset background color
+      feedbackMessage = ''; // Reset feedback message
+    });
+  }
+
+  void checkGuess() {
+    int? userGuess = int.tryParse(guessController.text);
+
+    if (userGuess != null) {
+      if (randomNumber != null) {
+        if (userGuess == randomNumber) {
+          setState(() {
+            backgroundColor = Colors.blue;
+            feedbackMessage = 'Congratulations! You guessed the correct number!';
+          });
+        } else {
+          setState(() {
+            feedbackMessage = 'Try again. Incorrect guess.';
+          });
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Guessing Game'),
+      ),
+      body: Container(
+        color: backgroundColor,
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Guess the Number (1-10)',
+                style: TextStyle(fontSize: 20),
+              ),
+              TextField(
+                controller: guessController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: 'Enter your guess',
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  checkGuess();
+                  generateRandomNumber(); // Generate a new random number for the next round
+                },
+                child: Text('Check Guess'),
+              ),
+              SizedBox(height: 20),
+              Text(
+                feedbackMessage,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

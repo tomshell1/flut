@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create an AnimationController with a duration of 2 seconds
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    // Create an Animation that moves the widget from left to right
+    _animation = Tween<Offset>(
+      begin: Offset(-1.0, 0.0),
+      end: Offset(1.0, 0.0),
+    ).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Simple Animation'),
+      ),
+      body: Center(
+        child: SlideTransition(
+          position: _animation,
+          child: Container(
+            width: 50,
+            height: 50,
+            color: Colors.blue,
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Start the animation when the button is pressed
+          _controller.forward();
+        },
+        child: Icon(Icons.play_arrow),
+      ),
+    );
+  }
+}

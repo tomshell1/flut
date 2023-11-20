@@ -1,0 +1,28 @@
+https://codereview.stackexchange.com/questions/179930/aes-implementation-in-c
+
+
+https://www.javatpoint.com/des-in-cppimport 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyMeditationApp());
+}
+
+class MyMeditationApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blue, // Set your calming color here
+        appBar: AppBar(
+          title: Text('Meditation App'),
+        ),
+        body: Center(
+          child: Text(
+            'Welcome to the Meditation App!',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ),
+    );
+  }
+}

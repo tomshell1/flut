@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyFitnessApp());
+}
+
+class MyFitnessApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Fitness App'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Fitness App',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Workouts'),
+              onTap: () {
+                // Navigate to the workouts section
+                Navigator.pop(context); // Close the drawer
+                // Add navigation logic here
+              },
+            ),
+            ListTile(
+              title: Text('Progress'),
+              onTap: () {
+                // Navigate to the progress section
+                Navigator.pop(context); // Close the drawer
+                // Add navigation logic here
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                // Navigate to the settings section
+                Navigator.pop(context); // Close the drawer
+                // Add navigation logic here
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Fitness App!',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}

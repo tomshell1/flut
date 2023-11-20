@@ -1,0 +1,153 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(CalculatorApp());
+}
+
+class CalculatorApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CalculatorHomePage(),
+    );
+  }
+}
+
+class CalculatorHomePage extends StatefulWidget {
+  @override
+  _CalculatorHomePageState createState() => _CalculatorHomePageState();
+}
+
+class _CalculatorHomePageState extends State<CalculatorHomePage> {
+  String input = '';
+  double result = 0.0; // Add a default value
+
+  void onDigitPressed(String digit) {
+    setState(() {
+      input += digit;
+    });
+  }
+
+  void onOperatorPressed(String operator) {
+    setState(() {
+      if (input.isNotEmpty) {
+        input += ' $operator ';
+      }
+    });
+  }
+
+  void onEqualsPressed() {
+    setState(() {
+      try {
+        result = calculateResult();
+        input = result.toString();
+      } catch (e) {
+        input = 'Error';
+      }
+    });
+  }
+
+  void onClearPressed() {
+    setState(() {
+      input = '';
+      result = 0.0; // Reset to default value
+    });
+  }
+
+  double calculateResult() {
+    if (input.isEmpty) {
+      throw Exception('Input is empty');
+    }
+
+    List<String> parts = input.split(' ');
+    if (parts.length != 3) {
+      throw Exception('Invalid expression');
+    }
+
+    double num1 = double.parse(parts[0]);
+    String operator = parts[1];
+    double num2 = double.parse(parts[2]);
+
+    switch (operator) {
+      case '+':
+        return num1 + num2;
+      case '-':
+        return num1 - num2;
+      case 'x':
+        return num1 * num2;
+      case '/':
+        if (num2 != 0) {
+          return num1 / num2;
+        } else {
+          throw Exception('Cannot divide by zero');
+        }
+      default:
+        throw Exception('Invalid operator');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculator'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              color: Colors.grey[300],
+              child: Text(
+                input,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ),
+          buildButtonRow(['7', '8', '9'], onDigitPressed),
+          buildButtonRow(['4', '5', '6'], onDigitPressed),
+          buildButtonRow(['1', '2', '3'], onDigitPressed),
+          buildButtonRow(['0', '.', '+', '-', 'x', '/'], onButtonPressed),
+          Row(
+            children: [
+              buildButton('=', onEqualsPressed),
+              buildButton('C', onClearPressed),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildButtonRow(List<String> buttons, Function(String) onPressed) {
+    return Row(
+      children: buttons
+          .map((button) => buildButton(button, () => onPressed(button)))
+          .toList(),
+    );
+  }
+
+  Widget buildButton(String label, Function() onPressed) {
+    return Expanded(
+      child: Container(
+        height: 80,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void onButtonPressed(String value) {
+    if (value == '+' || value == '-' || value == 'x' || value == '/') {
+      onOperatorPressed(value);
+    } else {
+      onDigitPressed(value);
+    }
+  }
+}
